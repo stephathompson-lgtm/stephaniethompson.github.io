@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    /* Simple Bar Chart Styling */
+    #chart { display: flex; align-items: flex-end; height: 400px; gap: 20px; padding: 30px; border-bottom: 2px solid black; }
+    .bar-container { display: flex; flex-direction: column; align-items: center; flex: 1; }
+    .bar { width: 90px; background-color: steelblue; transition: height 0.3s; }
+    .label { margin-top: 10px; font-size: 20px; text-align: center; }
+    .value { font-size: 20px; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h2>Social Media Usage by North American Country (Millions)</h2>
+
+<!-- Country Buttons -->
+<button onclick="updateChart('All')">All</button>
+<button onclick="updateChart('USA')">USA</button>
+<button onclick="updateChart('Mexico')">Mexico</button>
+<button onclick="updateChart('Canada')">Canada</button>
+
+<!-- Chart Display Area -->
+<div id="chart"></div>
+<h3 id="countryName">Select a Country</h3>
+
+<script>
+// 1. Data Source
+const socialData = [
+    { country: "USA", platform: "Facebook", users: 177 },
+    { country: "USA", platform: "YouTube", users: 246 },
+    { country: "USA", platform: "Instagram", users: 143 },
+    { country: "USA", platform: "TikTok", users: 112 },
+    { country: "Mexico", platform: "Facebook", users: 117 },
+    { country: "Mexico", platform: "YouTube", users: 86 },
+    { country: "Mexico", platform: "Instagram", users: 48 },
+    { country: "Mexico", platform: "TikTok", users: 60 },
+    { country: "Canada", platform: "Facebook", users: 32 },
+    { country: "Canada", platform: "YouTube", users: 32 },
+    { country: "Canada", platform: "Instagram", users: 20 },
+    { country: "Canada", platform: "TikTok", users: 12 },
+    { country: "All", platform: "Facebook", users: 326 },
+    { country: "All", platform: "YouTube", users: 364 },
+    { country: "All", platform: "Instagram", users: 211 },
+    { country: "All", platform: "TikTok", users: 184 },
+];
+
+function updateChart(country) {
+    // 2. Filter data
+    const filteredData = socialData.filter(item => item.country === country);
+    const chart = document.getElementById("chart");
+    document.getElementById("countryName").innerText = "Data for: " + country;
+    
+    // Clear previous bars
+    chart.innerHTML = "";
+
+    // 3. Generate new bars
+    filteredData.forEach(item => {
+        const barContainer = document.createElement("div");
+        barContainer.className = "bar-container";
+
+        const bar = document.createElement("div");
+        bar.className = "bar";
+        // Set height proportional to users (scaled)
+        bar.style.height = (item.users / 2) + "px"; 
+
+        const valLabel = document.createElement("span");
+        valLabel.className = "value";
+        valLabel.innerText = item.users;
+
+        const label = document.createElement("span");
+        label.className = "label";
+        label.innerText = item.platform;
+
+        barContainer.appendChild(valLabel);
+        barContainer.appendChild(bar);
+        barContainer.appendChild(label);
+        chart.appendChild(barContainer);
+    });
+}
+
+// Load default view
+updateChart('All');
+</script>
+
+</body>
+</html>
